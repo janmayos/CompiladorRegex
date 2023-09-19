@@ -1,13 +1,13 @@
 int var = 112 ;
 int var2=112;
 imprimenombre (String nombrescuela){
-    prinf("%d",nombrescuela);
+   prinf("%d",nombrescuela);
 }
 int main(){
 
-    int escuela = "ESCOM";
-    int nombrescuela = "Escuela superior de computo";
-    imprimenombre(nombrescuela); 
+   int escuela = "ESCOM";
+   int nombrescuela = "Escuela superior de computo";
+   imprimenombre(nombrescuela); 
 }
 
 char introduce_operador()
