@@ -9,76 +9,81 @@ lista_simbolos_aritmeticos = {'-' : "Resta",'+' : "Suma",'*' : "Multiplicación"
 #Se declara una lista de los simbolos de puntuación conocidos
 signos_puntuacion = {"<": "MENOR_QUE",">": "MAYOR_QUE","=": "IGUAL",".": "PUNTO","+": "MAS","-": "MENOS"," ": "DELIM_ESPACIO","(": "PARENTESIS_ABRE",")": "PARENTESIS_CIERRA","{": "LLAVE_ABRE","}": "LLAVE_CIERRA",",": "COMA",";": "PUNTO_COMA","*": "ASTERISCO","/": "DIAGONAL","!": "EXCLAMACION","_": "GUION_BAJO","'": "COMILLA_SIMPLE","\"" : "COMILLA_DOBLE","\n": "SALTO_LINEA","\\": "DIAGONAL_INVERTIDA",":": "DOS_PUNTOS","&": "AMPERSON","%":"PORCENTAJE"}
 
+#Expresiones regulares basicas
 regexstrbase = {
-    "Letra" : "[a-zA-z-áéíóúÁÉÍÓÚ]",
-    "Numero" : "[0-9]",
-    "Numeros" : "[0-9]+",
-    "Letras_numeros": "[a-zA-z-áéíóúÁÉÍÓÚ0-9]*"
+	"Letra" : "[a-zA-z-áéíóúÁÉÍÓÚ]",
+	"Numero" : "[0-9]",
+	"Numeros" : "[0-9]+",
+	"Letras_numeros": "[a-zA-z-áéíóúÁÉÍÓÚ0-9]*"
 }
 
+#Expresiones regulares complejas
 dic_regex_evalute = {
-    "ID" : regexstrbase["Letra"]+regexstrbase["Letras_numeros"]    
-    }
+	"ID" : regexstrbase["Letra"]+regexstrbase["Letras_numeros"]    
+	}
 
-auxlinea = None
-lista_tokens = []
 
+#Genera una lista recorriendo caracter por caracter hasta un caracter desconocido y los separa en una tupla
+#de elementos y se retorna una lista
+def lista_split_letras_numeros(cadena,aux_separador):
+	auxcadena = ""
+	for caracter in cadena:
+		if  re.fullmatch( regexstrbase["Letra"], caracter) or re.fullmatch( regexstrbase["Numero"], caracter):
+			auxcadena += caracter
+			print(auxcadena)
+		else:
+			if auxcadena == "":
+				aux_separador.append(caracter)
+			else:
+				aux_separador.append(auxcadena)
+				aux_separador.append(caracter)
+				auxcadena = ""#auxcadena = caracter
+	if auxcadena != "":
+		aux_separador.append(auxcadena)
+	
+
+#Determina token que tiene caracteres no reconocidos en las expresiones regulares basicas
+# y determina los token de la nueva lista de letras numeros
 def determina_token_complejo(cadena,aux_lista_tokens):
-    auxcadena = ""
-    aux_separador = []
-    for caracter in cadena:
-        if  re.fullmatch( regexstrbase["Letra"], caracter) or re.fullmatch( regexstrbase["Numero"], caracter):
-            auxcadena += caracter
-            print(auxcadena)
-        else:
-            if auxcadena == "":
-                aux_separador.append(caracter)
-            else:
-                aux_separador.append(auxcadena)
-                aux_separador.append(caracter)
-                auxcadena = ""#auxcadena = caracter
-    if auxcadena != "":
-        aux_separador.append(auxcadena)
-    for separador in aux_separador:
-        token = determinta_token(separador)
-        print(token)
-        if token != None:
-            aux_lista_tokens.append(token)
-        else:
-            print("Token no reconocido: "+separador)
-            exit(0)
-        
-
-    
+	aux_separador = []
+	lista_split_letras_numeros(cadena,aux_separador)
+	for separador in aux_separador:
+		token = determinta_token(separador)
+		print(token)
+		if token != None:
+			aux_lista_tokens.append(token)
+		else:
+			print("Token no reconocido: "+separador)
+			exit(0)
+		
+#Determina el vocabulario del token por palabras reservadas ID o numeros
 def determinta_token(cadena):
-    print(cadena)
-    if cadena in palabras_reservadas:
-        return "PR_"+cadena
-    elif  re.fullmatch(dic_regex_evalute["ID"], cadena):
-        return "ID"
-    elif cadena in signos_puntuacion:
-        return signos_puntuacion[cadena]
-    elif re.fullmatch( regexstrbase["Numeros"], cadena):
-        return "Numeros"
-    
+	print(cadena)
+	if cadena in palabras_reservadas:
+		return "PR_"+cadena
+	elif  re.fullmatch(dic_regex_evalute["ID"], cadena):
+		return "ID"
+	elif cadena in signos_puntuacion:
+		return signos_puntuacion[cadena]
+	elif re.fullmatch( regexstrbase["Numeros"], cadena):
+		return "Numeros"
+	
+if __name__ == '__main__':
+	lista_tokens = []
+	with open("script.txt") as file:
+		for linea in file:
+			aux_lista_tokens = []
+			aux_split_espacios = linea.replace("\n","").split(" ")
+			print(aux_split_espacios)
+			for cadena in aux_split_espacios:
+				if cadena != '':
+					token = determinta_token(cadena)
+					if token != None:
+						aux_lista_tokens.append(token)
+					else:
+						determina_token_complejo(cadena,aux_lista_tokens)
+				
+			lista_tokens.append(aux_lista_tokens)        
 
-with open("script.txt") as file:
-    for linea in file:
-        aux_lista_tokens = []
-        aux_split_espacios = linea.replace("\n","").split(" ")
-        print(aux_split_espacios)
-        for cadena in aux_split_espacios:
-            if cadena != '':
-                token = determinta_token(cadena)
-                if token != None:
-                    aux_lista_tokens.append(token)
-                else:
-                    determina_token_complejo(cadena,aux_lista_tokens)
-            
-        lista_tokens.append(aux_lista_tokens)        
-    for token in lista_tokens:
-        print(colored(f"{str(token)}", 'green'))
-        #if re.fullmatch(pat, linea.rstrip()):
-        #    print(colored(f"'{linea.rstrip()}'\tMAIL!", 'green'))
-        #else:
-        #    print(colored(f"'{linea.rstrip()}'\tNO MAIL", 'red'))
+		for token in lista_tokens:
+			print(colored(f"{str(token)}", 'green'))
