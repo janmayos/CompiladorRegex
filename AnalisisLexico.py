@@ -25,43 +25,30 @@ lista_tokens = []
 
 def determina_token_complejo(cadena,aux_lista_tokens):
     auxcadena = ""
-    ban_caracter = True
+    aux_separador = []
     for caracter in cadena:
-        if  ban_caracter and (re.fullmatch( regexstrbase["Letra"], caracter) or re.fullmatch( regexstrbase["Numero"], caracter)):
+        if  re.fullmatch( regexstrbase["Letra"], caracter) or re.fullmatch( regexstrbase["Numero"], caracter):
             auxcadena += caracter
             print(auxcadena)
         else:
             if auxcadena == "":
-                token = determinta_token(caracter)
-                if token != None:
-                    aux_lista_tokens.append(token)
-                else:
-                    print("Token no reconocido  "+cadena)
-                    exit(0)
+                aux_separador.append(caracter)
             else:
-                token = determinta_token(auxcadena)
-                print(token,ban_caracter)
-                if token != None:
-                    aux_lista_tokens.append(token)
-                    auxcadena = caracter
-                    if ban_caracter:
-
-                        ban_caracter = False
-                    else:
-                        if  re.fullmatch( regexstrbase["Letra"], auxcadena) or re.fullmatch( regexstrbase["Numero"], auxcadena):
-                            ban_caracter = True
-                else:
-                    print("Token no reconocido  "+cadena)
-                    exit(0)
-        
-    if not ban_caracter: 
-        token = determinta_token(auxcadena)
+                aux_separador.append(auxcadena)
+                aux_separador.append(caracter)
+                auxcadena = ""#auxcadena = caracter
+    if auxcadena != "":
+        aux_separador.append(auxcadena)
+    for separador in aux_separador:
+        token = determinta_token(separador)
         print(token)
         if token != None:
             aux_lista_tokens.append(token)
         else:
-            print("Token final no reconocido  "+cadena)
+            print("Token no reconocido: "+separador)
             exit(0)
+        
+
     
 def determinta_token(cadena):
     print(cadena)
@@ -88,7 +75,9 @@ with open("script.txt") as file:
                 else:
                     determina_token_complejo(cadena,aux_lista_tokens)
             
-        print(colored(f"{str(aux_lista_tokens)}", 'green'))
+        lista_tokens.append(aux_lista_tokens)        
+    for token in lista_tokens:
+        print(colored(f"{str(token)}", 'green'))
         #if re.fullmatch(pat, linea.rstrip()):
         #    print(colored(f"'{linea.rstrip()}'\tMAIL!", 'green'))
         #else:
