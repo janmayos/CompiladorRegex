@@ -1,0 +1,38 @@
+int var = 112 ;
+int var2=112;
+imprimenombre (String nombrescuela){
+    prinf("%d",nombrescuela);
+}
+int main(){
+
+    int escuela = "ESCOM";
+    int nombrescuela = "Escuela superior de computo";
+    imprimenombre(nombrescuela); 
+}
+
+char introduce_operador()
+{
+   char op;
+   bool error;
+   do
+   {
+      cout << "Introduzca el operador: ";
+      cin >> op;
+      error = false;
+      switch (op)
+      {
+         case '+':
+         case '-':
+         case '*':
+         case '/':
+         case '%':
+            break;
+         default:
+            cout << "ERROR: El operador introducido no es valido.\n";
+            error = true;
+            break;
+      }
+   }while (error);
+
+   return op;
+}
