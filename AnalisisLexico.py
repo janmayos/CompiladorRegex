@@ -37,7 +37,7 @@ def lista_split_letras_numeros(cadena,aux_separador):
 			else:
 				aux_separador.append(auxcadena)
 				aux_separador.append(caracter)
-				auxcadena = ""#auxcadena = caracter
+				auxcadena = ""
 	if auxcadena != "":
 		aux_separador.append(auxcadena)
 	
