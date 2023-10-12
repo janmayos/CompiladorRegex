@@ -1,5 +1,7 @@
 import re
 from termcolor import colored
+from Token import Token
+
 
 
 #Se declara una lista de las palabras reservadas en c++
@@ -30,7 +32,7 @@ def lista_split_letras_numeros(cadena,aux_separador):
 	for caracter in cadena:
 		if  re.fullmatch( regexstrbase["Letra"], caracter) or re.fullmatch( regexstrbase["Numero"], caracter):
 			auxcadena += caracter
-			print(auxcadena)
+			#print(auxcadena)
 		else:
 			if auxcadena == "":
 				aux_separador.append(caracter)
@@ -44,21 +46,21 @@ def lista_split_letras_numeros(cadena,aux_separador):
 
 #Determina token que tiene caracteres no reconocidos en las expresiones regulares basicas
 # y determina los token de la nueva lista de letras numeros
-def determina_token_complejo(cadena,aux_lista_tokens):
+def determina_token_complejo(cadena,aux_lista_tokens,numlinea):
 	aux_separador = []
 	lista_split_letras_numeros(cadena,aux_separador)
 	for separador in aux_separador:
 		token = determinta_token(separador)
-		print(token)
+		#print(token)
 		if token != None:
-			aux_lista_tokens.append(token)
+			aux_lista_tokens.append(Token(token,separador,separador,numlinea))
 		else:
 			print("Token no reconocido: "+separador)
 			exit(0)
 		
 #Determina el vocabulario del token por palabras reservadas ID o numeros
 def determinta_token(cadena):
-	print(cadena)
+	#print(cadena)
 	if cadena in palabras_reservadas:
 		return "PR_"+cadena
 	elif  re.fullmatch(dic_regex_evalute["ID"], cadena):
@@ -70,20 +72,25 @@ def determinta_token(cadena):
 	
 if __name__ == '__main__':
 	lista_tokens = []
+	numlinea = 0
 	with open("script.txt") as file:
 		for linea in file:
+			numlinea += 1
 			aux_lista_tokens = []
 			aux_split_espacios = linea.replace("\n","").split(" ")
-			print(aux_split_espacios)
+			#print(aux_split_espacios)
 			for cadena in aux_split_espacios:
+				
 				if cadena != '':
 					token = determinta_token(cadena)
 					if token != None:
-						aux_lista_tokens.append(token)
+						aux_lista_tokens.append(Token(token,cadena,cadena,numlinea))
+
 					else:
-						determina_token_complejo(cadena,aux_lista_tokens)
+						determina_token_complejo(cadena,aux_lista_tokens,numlinea)
 				
 			lista_tokens.append(aux_lista_tokens)        
-
+			
 		for token in lista_tokens:
-			print(colored(f"{str(token)}", 'green'))
+			if len(token) != 0:
+				print(colored(f"{str(token[0])}", 'green'))
