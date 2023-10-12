@@ -1,38 +1,32 @@
-int var = 112 ;
-int var2=112;
-imprimenombre (String nombrescuela){
-   prinf("%d",nombrescuela);
-}
-int main(){
-
-   int escuela = "ESCOM";
-   int nombrescuela = "Escuela superior de computo";
-   imprimenombre(nombrescuela); 
-}
-
-char introduce_operador()
+#include <iostream>
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+int Numero1 , Numero2 ;
+char Suma , Resta , Multiplicacion , Division, Operacion;
+int main(int argc, char *argv[]) {
+cout<<( " Ingrese Numero1 " );
+cin>>(Numero1);
+cout<<( "Ingrese operacion" );
+cin>>(Operacion);
+   cout<<( "Ingrese Numero2" );
+cin>>(Numero2);
+if(Operacion == '+');
 {
-   char op;
-   bool error;
-   do
-   {
-      cout << "Introduzca el operador: ";
-      cin >> op;
-      error = false;
-      switch (op)
-      {
-         case '+':
-         case '-':
-         case '*':
-         case '/':
-         case '%':
-            break;
-         default:
-            cout << "ERROR: El operador introducido no es valido.\n";
-            error = true;
-            break;
-      }
-   }while (error);
+cout<<Numero1+Numero2;
+}
+if(Operacion == '-' );
 
-   return op;
+{
+cout<<Numero1-Numero2;
+}
+if(Operacion == '*');
+{
+cout<<Numero1*Numero2;
+}
+if(Operacion =='/') ;
+{
+cout<<Numero1/Numero2 ;
+}
+return 0;
 }
