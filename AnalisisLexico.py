@@ -62,7 +62,7 @@ def determina_token_complejo(cadena,aux_lista_tokens,numlinea):
 def determinta_token(cadena):
 	#print(cadena)
 	if cadena in palabras_reservadas:
-		return "PR_"+cadena
+		return "PR"#"PR_"+cadena
 	elif  re.fullmatch(dic_regex_evalute["ID"], cadena):
 		return "ID"
 	elif cadena in signos_puntuacion:
@@ -70,7 +70,7 @@ def determinta_token(cadena):
 	elif re.fullmatch( regexstrbase["Numeros"], cadena):
 		return "Numeros"
 	
-if __name__ == '__main__':
+def genera_lista_tokens():
 	lista_tokens = []
 	numlinea = 0
 	with open("script.txt") as file:
@@ -80,17 +80,17 @@ if __name__ == '__main__':
 			aux_split_espacios = linea.replace("\n","").split(" ")
 			#print(aux_split_espacios)
 			for cadena in aux_split_espacios:
-				
 				if cadena != '':
 					token = determinta_token(cadena)
 					if token != None:
 						aux_lista_tokens.append(Token(token,cadena,cadena,numlinea))
-
 					else:
 						determina_token_complejo(cadena,aux_lista_tokens,numlinea)
-				
 			lista_tokens.append(aux_lista_tokens)        
-			
-		for token in lista_tokens:
-			if len(token) != 0:
-				print(colored(f"{str(token[0])}", 'green'))
+	return lista_tokens		
+
+
+if __name__ == '__main__':
+	for token in genera_lista_tokens():
+		if len(token) != 0:
+			print(colored(f"{str(token[0])}", 'green'))	
