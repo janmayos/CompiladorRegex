@@ -6,13 +6,7 @@ class Token:
         self.literal = literal#Object
         self.linea = linea#int
 
-    """
-    def __init__(self):
-        self.tipo = None #TipoToken 
-        self.lexema = None#String
-        self.literal = None #Object
-        self.linea = None#int
-    """
+
     def set_token_oftoken(self,token2):
         self.tipo = token2.get_tipo()
         self.lexema = token2.get_lexema()

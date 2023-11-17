@@ -2,31 +2,35 @@
 #include <stdlib.h>
 #include <iostream>
 using namespace std;
+
 int Numero1 , Numero2 ;
 char Suma , Resta , Multiplicacion , Division, Operacion;
-int main(int argc, char *argv[]) {
+
+int main() {
 cout<<( " Ingrese Numero1 " );
 cin>>(Numero1);
 cout<<( "Ingrese operacion" );
 cin>>(Operacion);
    cout<<( "Ingrese Numero2" );
 cin>>(Numero2);
-if(Operacion == '+');
+if(Operacion == '+')
 {
 cout<<Numero1+Numero2;
 }
-if(Operacion == '-' );
+if(Operacion == '-' )
 
 {
 cout<<Numero1-Numero2;
 }
-if(Operacion == '*');
+if(Operacion == '*')
 {
 cout<<Numero1*Numero2;
 }
-if(Operacion =='/') ;
+if(Operacion =='/') 
 {
 cout<<Numero1/Numero2 ;
 }
+cout<<( "Ingrese Numero2 "  ) << Numero1;
+
 return 0;
 }

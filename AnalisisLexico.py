@@ -1,13 +1,12 @@
 import re
-from termcolor import colored
 from Token import Token
 
 
 
 #Se declara una lista de las palabras reservadas en c++
-palabras_reservadas = ["abstract","event","namespace","static","as","explicit","new","string","base","extern","null","struct","bool","false","object","switch","break","finally","operator","this","byte","fixed","out","throw","case","float","override","true","catch","for","params","try","char","foreach","private","typeof","checked","goto","protected","uint","class","if","public","ulong","const","implicit","readonly","unchecked","continue","in","ref","unsafe","decimal","int","return","ushort","default","interface","sbyte","using","delegate","internal","sealed","virtual","do","is","short","volatile","double","lock","sizeof","void","else","long","stackalloc","while","enum","String"]
+palabras_reservadas = ["abstract","event","namespace","static","as","explicit","new","string","base","extern","null","struct","bool","false","object","switch","break","finally","operator","this","byte","fixed","out","throw","case","float","override","true","catch","for","params","try","char","foreach","private","typeof","checked","goto","protected","uint","class","if","public","ulong","const","implicit","readonly","unchecked","continue","in","ref","unsafe","decimal","int","return","ushort","default","interface","sbyte","using","delegate","internal","sealed","virtual","do","is","short","volatile","double","lock","sizeof","void","else","long","stackalloc","while","enum","String","cout"]
 #Se declara una lista de los simbolos aritmeticos
-lista_simbolos_aritmeticos = {'-' : "Resta",'+' : "Suma",'*' : "Multiplicación",'/' : "División",'%' : "Módulo","--" : "Decremento","++" : "Incremento"}
+lista_simbolos_aritmeticos = {'-' : "RESTA",'+' : "SUMA",'*' : "MULTIPLICACIÓN",'/' : "DIVISIÓN",'%' : "MÓDULO","--" : "DECREMENTO","++" : "INCREMENTO"}
 #Se declara una lista de los simbolos de puntuación conocidos
 signos_puntuacion = {"#":"NUMERAL","<": "MENOR_QUE",">": "MAYOR_QUE","=": "IGUAL",".": "PUNTO","+": "MAS","-": "MENOS"," ": "DELIM_ESPACIO","(": "PARENTESIS_ABRE",")": "PARENTESIS_CIERRA","{": "LLAVE_ABRE","}": "LLAVE_CIERRA",",": "COMA",";": "PUNTO_COMA","*": "ASTERISCO","/": "DIAGONAL","!": "EXCLAMACION","_": "GUION_BAJO","'": "COMILLA_SIMPLE","\"" : "COMILLA_DOBLE","\n": "SALTO_LINEA","\\": "DIAGONAL_INVERTIDA",":": "DOS_PUNTOS","&": "AMPERSON","%":"PORCENTAJE"}
 
@@ -65,6 +64,8 @@ def determinta_token(cadena):
 		return "PR"#"PR_"+cadena
 	elif  re.fullmatch(dic_regex_evalute["ID"], cadena):
 		return "ID"
+	elif cadena in lista_simbolos_aritmeticos:
+		return lista_simbolos_aritmeticos[cadena]
 	elif cadena in signos_puntuacion:
 		return signos_puntuacion[cadena]
 	elif re.fullmatch( regexstrbase["Numeros"], cadena):
@@ -93,4 +94,5 @@ def genera_lista_tokens():
 if __name__ == '__main__':
 	for token in genera_lista_tokens():
 		if len(token) != 0:
-			print(colored(f"{str(token[0])}", 'green'))	
+			for auxtoken in token:
+				print(str(auxtoken.get_info()))	
