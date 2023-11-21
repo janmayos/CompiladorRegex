@@ -33,7 +33,17 @@ cout<<Numero1/Numero2 ;
 cout<<( "Ingrese Numero2 "  ) << Numero1;
 std::cout<<( "Ingrese Numero2 "  ) << Numero1;
 
-if( a == b && !aa != bb || (aaa < bbb) || aba > abnab && kl <= ll || kss >= jkalskl)
+
+if( (a == b && !aa != bb) || (aaa < bbb) || aba > abnab && kl <= ll || kss >= jkalskl)
+
+if( (a == b && !aa != bb)  )
+if( a == b && !aa != bb  )
+
+if( (a == b && !aa != bb) || (aaa < bbb) )
+if( (a == b && !aa != bb) || aaa < bbb )
+if( a == b && !aa != bb || aaa < bbb )
+if( (a == b) && !aa != bb || aaa < bbb )
+if( (a == b) && (!aa != bb || aaa < bbb )){
 
 a == b 
 aa != bb 
