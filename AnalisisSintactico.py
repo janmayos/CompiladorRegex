@@ -92,7 +92,14 @@ if __name__ == '__main__':
 		},
 		"Contenedor" : {
 			"regex" : "(LLAVE_ABRE|LLAVE_CIERRA)"
+		},
+		"Case":{
+			"regex" : "(PR"+datonorm+"DOS_PUNTOS)"
+		},
+		"default":{
+			"regex" : "(PRDOS_PUNTOS)"
 		}
+		
 	}
 
 	incremento_decremento = "(IDSUMASUMA|IDRESTARESTA)"

@@ -60,3 +60,16 @@ return 0;
 for (int k = 0; k < 10; k++)
 for (int k = 0, m = 0; k < 10; k++, m--)
 for (;;)
+
+switch (x)
+{
+ case 0: 
+   cout << x << " is 0"; 
+   break;
+ case 1: 
+   cout << x << " is 1";
+    break;
+ default: 
+ cout << x << " is not 1 or 2";
+  break;
+}
