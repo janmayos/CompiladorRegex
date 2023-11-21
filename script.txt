@@ -45,12 +45,18 @@ if( a == b && !aa != bb || aaa < bbb )
 if( (a == b) && !aa != bb || aaa < bbb )
 if( (a == b) && (!aa != bb || aaa < bbb )){
 
-a == b 
-aa != bb 
-aaa < bbb
-aba > abnab 
-kl <= ll 
-kss >= jkalskl
+//a == b 
+//aa != bb 
+//aaa < bbb
+//aba > abnab 
+//kl <= ll 
+//kss >= jkalskl
 
+a++;
+b--;
 return 0;
 }
+
+for (int k = 0; k < 10; k++)
+for (int k = 0, m = 0; k < 10; k++, m--)
+for (;;)

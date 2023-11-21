@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	#Combinacion de comparacion con parentesis o sin parentesis
 
 	comparacion_full = "(("+comparacion+")|("+comparacion_parentesis+"))"
-	 
+	
 	# operadores logicos compuerta and or 
 	operadorlogico = "(AMPERSONAMPERSON|PLECAPLECA)"
 	
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 	regextokens_linea = {
 		"Variables_asinación" : {
 			"regex": 
-			"PR(ID(COMA|(IGUAL(Numeros|COMILLA_SIMPLEIDCOMILLA_SIMPLE|COMILLA_DOBLE(ID)*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
+			"PR(ID(COMA|(IGUAL(Numeros|Numero|COMILLA_SIMPLEIDCOMILLA_SIMPLE|COMILLA_DOBLE(ID)*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
 		},
 		"Definir_funcion" : {
 			"regex" : "(PRID|ID)(PARENTESIS_ABRE((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)|(PRID(COMAPRID)*((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)))))"
@@ -86,8 +86,34 @@ if __name__ == '__main__':
 		},
 		"if" : {
 			"regex" : "PRPARENTESIS_ABRE("+comparacion_full_operador_logico_parentesis_full_final+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
+		},
+		"Comentario" : {
+			"regex" : "DIVISIÓNDIVISIÓN.*"
+		},
+		"Contenedor" : {
+			"regex" : "(LLAVE_ABRE|LLAVE_CIERRA)"
 		}
 	}
+
+	incremento_decremento = "(IDSUMASUMA|IDRESTARESTA)"
+	regextokens_linea["incremento_decremento"]={
+			"regex" : "("+incremento_decremento+"PUNTO_COMA)"
+		}
+	for_center = "("+regextokens_linea["Variables_asinación"]["regex"]+comparacion_full+"PUNTO_COMA("+incremento_decremento+"(COMA)?)+)"
+	regextokens_linea["for"]={
+			"regex" : "PRPARENTESIS_ABRE("+for_center+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))"
+		}
+	regextokens_linea["forinfinite"]={
+			"regex" : "PRPARENTESIS_ABREPUNTO_COMAPUNTO_COMAPARENTESIS_CIERRA"
+		}
+	regextokens_linea["Palabra_reservada"]={
+			"regex" : "PRPUNTO_COMA"
+		}
+	
+	regextokens_linea["return"]={
+			"regex" : "(PR("+dato+")PUNTO_COMA)"
+		}
+
 	#print(regextokens_linea["if"]["regex"])
 	#exit(0)
 	#PR_.+(PARENTESIS_ABRE(((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)|(ID(COMAID)*((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))))))
