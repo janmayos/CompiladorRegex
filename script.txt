@@ -10,7 +10,7 @@ int main() {
 cout<<( " Ingrese Numero1 " );
 cin>>(Numero1);
 cout<<( "Ingrese operacion" );
-cin>>(Operacion);
+cin>>Operacion;
    cout<<( "Ingrese Numero2" );
 cin>>(Numero2);
 if(Operacion == '+')
@@ -22,7 +22,7 @@ if(Operacion == '-' )
 {
 cout<<Numero1-Numero2;
 }
-if(Operacion == '*')
+if((Operacion) == '*')
 {
 cout<<Numero1*Numero2;
 }
@@ -31,6 +31,16 @@ if(Operacion =='/')
 cout<<Numero1/Numero2 ;
 }
 cout<<( "Ingrese Numero2 "  ) << Numero1;
+std::cout<<( "Ingrese Numero2 "  ) << Numero1;
+
+if( a == b && !aa != bb || (aaa < bbb) || aba > abnab && kl <= ll || kss >= jkalskl)
+
+a == b 
+aa != bb 
+aaa < bbb
+aba > abnab 
+kl <= ll 
+kss >= jkalskl
 
 return 0;
 }
