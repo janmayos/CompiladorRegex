@@ -1,75 +1,88 @@
-#include <iostream>
-#include <stdlib.h>
-#include <iostream>
-using namespace std;
-
-int Numero1 , Numero2 ;
-char Suma , Resta , Multiplicacion , Division, Operacion;
-
-int main() {
-cout<<( " Ingrese Numero1 " );
-cin>>(Numero1);
-cout<<( "Ingrese operacion" );
-cin>>Operacion;
-   cout<<( "Ingrese Numero2" );
-cin>>(Numero2);
-if(Operacion == '+')
-{
-cout<<Numero1+Numero2;
-}
-if(Operacion == '-' )
-
-{
-cout<<Numero1-Numero2;
-}
-if((Operacion) == '*')
-{
-cout<<Numero1*Numero2;
-}
-if(Operacion =='/') 
-{
-cout<<Numero1/Numero2 ;
-}
-cout<<( "Ingrese Numero2 "  ) << Numero1;
-std::cout<<( "Ingrese Numero2 "  ) << Numero1;
-
-
-if( (a == b && !aa != bb) || (aaa < bbb) || aba > abnab && kl <= ll || kss >= jkalskl)
-
-if( (a == b && !aa != bb)  )
-if( a == b && !aa != bb  )
-
-if( (a == b && !aa != bb) || (aaa < bbb) )
-if( (a == b && !aa != bb) || aaa < bbb )
-if( a == b && !aa != bb || aaa < bbb )
-if( (a == b) && !aa != bb || aaa < bbb )
-if( (a == b) && (!aa != bb || aaa < bbb )){
-
-//a == b 
-//aa != bb 
-//aaa < bbb
-//aba > abnab 
-//kl <= ll 
-//kss >= jkalskl
-
-a++;
-b--;
-return 0;
-}
-
-for (int k = 0; k < 10; k++)
-for (int k = 0, m = 0; k < 10; k++, m--)
-for (;;)
-
-switch (x)
-{
- case 0: 
-   cout << x << " is 0"; 
-   break;
- case 1: 
-   cout << x << " is 1";
-    break;
- default: 
- cout << x << " is not 1 or 2";
-  break;
-}
+#include <iostream>  //comentario
+#include <stdlib.h> //comentario
+#include <iostream> //comentario
+#include "iostream" //comentario
+#include "string" //comentario
+using namespace std; //using namespace //comentario
+ //comentario
+int Numero1 , Numero2 ; //comentar //comentario
+char Suma , Resta , Multiplicacion , Division, Operacion; //comentario
+ //comentario
+int main() { //comentario
+cout<<( " Ingrese Numero1 " ); //comentario
+cin>>(Numero1); //comentario
+cout<<( "Ingrese operacion" ); //comentario
+cin>>Operacion; //comentario
+   cout<<( "Ingrese Numero2" ); //comentario
+cin>>(Numero2); //comentario
+if(Operacion == '+') //comentario
+{ //comentario
+cout<<Numero1+Numero2; //comentario
+} //comentario
+if(Operacion == '-' ) //comentario
+ //comentario
+{ //comentario
+cout<<Numero1-Numero2; //comentario
+} //comentario
+if((Operacion) == '*') //comentario
+{ //comentario
+cout<<Numero1*Numero2; //comentario
+} //comentario
+if(Operacion =='/')  //comentario
+{ //comentario
+cout<<Numero1/Numero2 ; //comentario
+} //comentario
+cout<<( "Ingrese Numero2 "  ) << Numero1; //comentario
+std::cout<<( "Ingrese Numero2 "  ) << Numero1; //comentario
+ //comentario
+ //comentario
+if( (a == b && !aa != bb) || (aaa < bbb) || aba > abnab && kl <= ll || kss >= jkalskl) //comentario
+ //comentario
+if( (a == b && !aa != bb)  ) //comentario
+if( a == b && !aa != bb  ) //comentario
+ //comentario
+if( (a == b && !aa != bb) || (aaa < bbb) ) //comentario
+if( (a == b && !aa != bb) || aaa < bbb ) //comentario
+if( a == b && !aa != bb || aaa < bbb ) //comentario
+if( (a == b) && !aa != bb || aaa < bbb ) //comentario
+if( (a == b) && (!aa != bb || aaa < bbb )){ //comentario
+if( (a == b && !aa != bb && !aa != bb)  ) //comentario
+ //comentario
+//a == b  //comentario
+//aa != bb  //comentario
+//aaa < bbb //comentario
+//aba > abnab  //comentario
+//kl <= ll  //comentario
+//kss >= jkalskl //comentario
+ //comentario
+a++; //comentario
+b--; //comentario
+return 0; //comentario
+} //comentario
+ //comentario
+for (int k = 0; k < 10; k++) //comentario
+for (int k = 0, m = 0; k < 10; k++, m--) //comentario
+for (;;) //comentario
+ //comentario
+switch (x) //comentario
+{ //comentario
+ case 0:  //comentario
+   cout << x << " is 0";  //comentario
+   break; //comentario
+ case 1:  //comentario
+   cout << x << " is 1"; //comentario
+    break; //comentario
+ default:  //comentario
+ cout << x << " is not 1 or 2"; //comentario
+  break; //comentario
+} //comentario
+ //comentario
+a+ba+b //comentario
+c-2+(a+b) //comentario
+c+(a+b) //comentario
+(c+(a+b)) //comentario
+ //comentario
+(2*2)*(a+b) //comentario
+((2/d)+(dl+2.2)) //comentario
+int jajajaj = a+ba+b+((2/d)+(dl+2.2)); //comentario
+ //comentario

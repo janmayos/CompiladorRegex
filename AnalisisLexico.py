@@ -6,7 +6,7 @@ from Token import Token
 #Se declara una lista de las palabras reservadas en c++
 palabras_reservadas = ["std","abstract","event","namespace","static","as","explicit","new","string","base","extern","null","struct","bool","false","object","switch","break","finally","operator","this","byte","fixed","out","throw","case","float","override","true","catch","for","params","try","char","foreach","private","typeof","checked","goto","protected","uint","class","if","public","ulong","const","implicit","readonly","unchecked","continue","in","ref","unsafe","decimal","int","return","ushort","default","interface","sbyte","using","delegate","internal","sealed","virtual","do","is","short","volatile","double","lock","sizeof","void","else","long","stackalloc","while","enum","String","cout","cin"]
 #Se declara una lista de los simbolos aritmeticos
-lista_simbolos_aritmeticos = {"-" : "RESTA",'+' : "SUMA",'*' : "MULTIPLICACIÓN",'/' : "DIVISIÓN",'%' : "MÓDULO","--" : "DECREMENTO","++" : "INCREMENTO"}
+lista_simbolos_aritmeticos = {"-" : "RESTA",'+' : "SUMA",'*' : "MULTIPLICACION",'/' : "DIVISION",'%' : "MODULO","--" : "DECREMENTO","++" : "INCREMENTO"}
 #Se declara una lista de los simbolos de puntuación conocidos
 signos_puntuacion = {"#":"NUMERAL","<": "MENOR_QUE",">": "MAYOR_QUE","=": "IGUAL",".": "PUNTO","+": "MAS","-": "MENOS"," ": "DELIM_ESPACIO","(": "PARENTESIS_ABRE",")": "PARENTESIS_CIERRA","{": "LLAVE_ABRE","}": "LLAVE_CIERRA",",": "COMA",";": "PUNTO_COMA","*": "ASTERISCO","/": "DIAGONAL","!": "EXCLAMACION","_": "GUION_BAJO","'": "COMILLA_SIMPLE","\"" : "COMILLA_DOBLE","\n": "SALTO_LINEA","\\": "DIAGONAL_INVERTIDA",":": "DOS_PUNTOS","&": "AMPERSON","%":"PORCENTAJE","|" : "PLECA"}
 

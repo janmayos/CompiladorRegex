@@ -3,17 +3,24 @@ from AnalisisLexico import genera_lista_tokens
 from Token import Token
 
 def determina_bien_escrito(cadena,cadena_lexema,regextokens_linea,numlinea):
+	#comentario al final de caracter conocido
+	comentario = "DIVISIONDIVISION.*"
+	comentario_real = "\\/\\/.*"
 	ban = True
 	for nombre in regextokens_linea:
-		if re.fullmatch(regextokens_linea[nombre]["regex"], cadena):
+		if re.fullmatch("(("+regextokens_linea[nombre]["regex"]+")|("+regextokens_linea[nombre]["regex"]+comentario+"))", cadena):
 			if "Eval" in regextokens_linea[nombre]:
-				if not re.fullmatch(regextokens_linea[nombre]["Eval"], cadena_lexema):
+				if not re.fullmatch("(("+regextokens_linea[nombre]["Eval"]+")|("+regextokens_linea[nombre]["Eval"]+comentario_real+"))", cadena_lexema):
 					print("Linea no reconocida '"+cadena_lexema+"'"+" "+str(numlinea))
 					exit(0)
 			print("Esta bien escrito: '"+ cadena + "' "+nombre+" "+str(numlinea))
 			ban = False
 			break
 	if(ban):
+		#Tiene comentario 
+		if re.fullmatch(comentario, cadena):
+			print("Tiene comentario")
+			exit(0)
 		print("Linea no reconocida '"+cadena+"'"+" "+str(numlinea))
 if __name__ == '__main__':
 
@@ -61,21 +68,56 @@ if __name__ == '__main__':
 	#print(comparacion_full_operador_logico_parentesis_full_final)
 	#exit(0)
 	
+	##Operacion matematica
+	#dato primitivo conocido para operaciones matematicas
+	datonorm_mat ="((ID)|((Numeros|Numero)(PUNTO(Numeros|Numero))?))"
+	
+	#dato con parentesis o sin parentesis
+	dato_mat =  "(("+datonorm_mat+")|(PARENTESIS_ABRE("+datonorm_mat+")PARENTESIS_CIERRA))"
 
 
+	#operadores de comparacion Menor que: < Mayor que: > Igual: = Diferente: != Menor o igual que: <= Mayor o igual que: >=
+
+	operadores_mat = "(SUMA|RESTA|MULTIPLICACION|DIVISION|MODULO)"
+
+	#Operacion matematica dos datos primitivos con los operadores e.g. 1 + 1
+	operacion_normal="("+dato_mat+operadores_mat+dato_mat+")"
+	
+	#Operacion entre parentesis
+	operacion_parentesis= "(PARENTESIS_ABRE("+operacion_normal+")PARENTESIS_CIERRA)"
+
+	#Combinacion de operacion matematica con parentesis o sin parentesis
+
+	operacion_full = "(("+operacion_normal+")|("+operacion_parentesis+"))"
+
+	#Operacion combinacion 
+	#Operaciones de mas datos mat
+	operacion_full_dosdatos="(("+dato_mat+"|"+operacion_full+")(("+operadores_mat+")("+dato_mat+"|"+operacion_full+"))*)"
+	
+	#Union de operadores logicos con comparaciones encerrado entre parentesis 
+	operacion_full_dosdatos_parentesis = "(PARENTESIS_ABRE("+operacion_full_dosdatos+")PARENTESIS_CIERRA)"
+	
+	#Union de operadores logicos con comparaciones encerrado entre parentesis o sin
+	operacion_full_dosdatos_full="((("+operacion_full_dosdatos+")|("+operacion_full_dosdatos_parentesis+")))"
+	
+	##Union de operadores logicos con comparaciones encerrado entre parentesis o sin, ya sea una o otra
+	operacion_full_dosdatos_full_final = "(("+operacion_full_dosdatos_full+")(("+operadores_mat+")("+operacion_full_dosdatos_full+"))*)+"
+
+	#print(operacion_full_dosdatos)
+	#exit(0)
 	regextokens_linea = {
-		"Variables_asinación" : {
+		"Variables_asinacion" : {
 			"regex": 
-			"PR(ID(COMA|(IGUAL(Numeros|Numero|COMILLA_SIMPLEIDCOMILLA_SIMPLE|COMILLA_DOBLE(ID)*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
+			"PR(ID(COMA|(IGUAL("+operacion_full_dosdatos_full_final+"|Numeros|Numero|COMILLA_SIMPLEIDCOMILLA_SIMPLE|COMILLA_DOBLE(ID)*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
 		},
 		"Definir_funcion" : {
 			"regex" : "(PRID|ID)(PARENTESIS_ABRE((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)|(PRID(COMAPRID)*((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)))))"
 		},
 		"Libreria" : {
-			"regex" : "NUMERALIDMENOR_QUE(ID|(IDPUNTOID))MAYOR_QUE"
+			"regex" : "NUMERALID((MENOR_QUE(ID|(IDPUNTOID))MAYOR_QUE)|(COMILLA_DOBLE(ID|(IDPUNTOID)|(PR))COMILLA_DOBLE))" #https://www.programarya.com/Cursos/C++/Bibliotecas-o-Librerias
 		},
 		"Imprimir_cout" : {
-			"regex" : "(PRDOS_PUNTOSDOS_PUNTOS)?PR(MENOR_QUEMENOR_QUE((PARENTESIS_ABRE(ID|COMILLA_DOBLE+.+COMILLA_DOBLE)PARENTESIS_CIERRA)|(ID|COMILLA_DOBLE+.+COMILLA_DOBLE)))+PUNTO_COMA"
+			"regex" : "(PRDOS_PUNTOSDOS_PUNTOS)?PR(MENOR_QUEMENOR_QUE((PARENTESIS_ABRE(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)PARENTESIS_CIERRA)|(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)))+PUNTO_COMA"
 		},
 		"Obtener_cin" : {
 			"regex" : "PRMAYOR_QUEMAYOR_QUE((PARENTESIS_ABREIDPARENTESIS_CIERRA)|(ID))PUNTO_COMA"
@@ -87,8 +129,11 @@ if __name__ == '__main__':
 		"if" : {
 			"regex" : "PRPARENTESIS_ABRE("+comparacion_full_operador_logico_parentesis_full_final+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
 		},
+		"switch" : {
+			"regex" : "PRPARENTESIS_ABRE(ID)((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
+		},
 		"Comentario" : {
-			"regex" : "DIVISIÓNDIVISIÓN.*"
+			"regex" : "DIVISIONDIVISION.*"
 		},
 		"Contenedor" : {
 			"regex" : "(LLAVE_ABRE|LLAVE_CIERRA)"
@@ -98,6 +143,9 @@ if __name__ == '__main__':
 		},
 		"default":{
 			"regex" : "(PRDOS_PUNTOS)"
+		},
+		"Operacion_mat": {
+			"regex" : operacion_full_dosdatos_full_final
 		}
 		
 	}
@@ -106,7 +154,7 @@ if __name__ == '__main__':
 	regextokens_linea["incremento_decremento"]={
 			"regex" : "("+incremento_decremento+"PUNTO_COMA)"
 		}
-	for_center = "("+regextokens_linea["Variables_asinación"]["regex"]+comparacion_full+"PUNTO_COMA("+incremento_decremento+"(COMA)?)+)"
+	for_center = "("+regextokens_linea["Variables_asinacion"]["regex"]+comparacion_full+"PUNTO_COMA("+incremento_decremento+"(COMA)?)+)"
 	regextokens_linea["for"]={
 			"regex" : "PRPARENTESIS_ABRE("+for_center+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))"
 		}
