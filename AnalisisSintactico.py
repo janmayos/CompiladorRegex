@@ -2,16 +2,51 @@ import re
 from AnalisisLexico import genera_lista_tokens
 from Token import Token
 
-def determina_bien_escrito(cadena,cadena_lexema,regextokens_linea,numlinea):
+def determina_bien_escrito(cadena,cadena_lexema,regextokens_linea,numlinea,operacion_full_dosdatos_full_final):
 	#comentario al final de caracter conocido
 	comentario = "DIVISIONDIVISION.*"
 	comentario_real = "\\/\\/.*"
 	ban = True
+	bantipodato = True
+	#https://es.scribd.com/document/325651719/Los-tipos-de-datos-en-C-docx
+	#http://www.gridmorelos.uaem.mx/~mcruz/cursos/varydat.pdf
+	tipodato = { 
+		"int" : "(SUMA|RESTA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))",
+		"signedint" : "(SUMA|RESTA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))",
+		"unsigned" : "(SUMA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))",
+		"float": "(SUMA|RESTA)?((Numero|Numeros)(PUNTO(Numero|Numeros))?|ID|("+operacion_full_dosdatos_full_final+"))",
+		"double": "(SUMA|RESTA)?((Numero|Numeros)(PUNTO(Numero|Numeros))?|ID|("+operacion_full_dosdatos_full_final+"))",
+		"char" : "(COMILLA_SIMPLE.*COMILLA_SIMPLE)|(Numero|Numeros)",
+		"bool" : "Numero",
+		"short" : "(SUMA|RESTA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))",
+		"signedshort" : "(SUMA|RESTA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))",
+		"unsignedshort" : "(SUMA)?((Numero|Numeros)|ID|("+operacion_full_dosdatos_full_final+"))"
+		
+
+
+	}
+
 	for nombre in regextokens_linea:
 		if re.fullmatch("(("+regextokens_linea[nombre]["regex"]+")|("+regextokens_linea[nombre]["regex"]+comentario+"))", cadena):
+			if "Definir_Variables" == nombre:
+				for tipo in tipodato:
+					if re.fullmatch(tipo+".*",cadena_lexema):
+						for variabletipo in cadena[4:-10].split("COMA"):
+							if variabletipo.find("IGUAL")!=-1:
+								print(cadena_lexema,variabletipo,variabletipo[variabletipo.find("IGUAL")+5::])
+								if re.fullmatch(tipodato[tipo],variabletipo[variabletipo.find("IGUAL")+5::]):
+									print("Correcto tipo de dato")
+								else:
+									print("Tipo de dato no compatible "+cadena_lexema)
+									exit(0)
+						bantipodato = False
+						break
+				if bantipodato:
+					print("Palabra reservada no incluida "+cadena_lexema)
+					exit(0)
 			if "Eval" in regextokens_linea[nombre]:
 				if not re.fullmatch("(("+regextokens_linea[nombre]["Eval"]+")|("+regextokens_linea[nombre]["Eval"]+comentario_real+"))", cadena_lexema):
-					print("Linea no reconocida '"+cadena_lexema+"'"+" "+str(numlinea))
+					print("Linea no reconocida EVAL '"+cadena_lexema+"'"+" "+str(numlinea))
 					exit(0)
 			print("Esta bien escrito: '"+ cadena + "' "+nombre+" "+str(numlinea))
 			ban = False
@@ -25,7 +60,7 @@ def determina_bien_escrito(cadena,cadena_lexema,regextokens_linea,numlinea):
 if __name__ == '__main__':
 
 	#dato primitivo conocido 
-	datonorm ="((ID)|(COMILLA_SIMPLE.+COMILLA_SIMPLE)|(COMILLA_DOBLE.+COMILLA_DOBLE)|((Numeros|Numero)(PUNTO(Numeros|Numero))?))"
+	datonorm ="((ID)|(COMILLA_SIMPLE.+COMILLA_SIMPLE)|(COMILLA_DOBLE.+COMILLA_DOBLE)|(((RESTA|SUMA)?(Numeros|Numero))(PUNTO((RESTA|SUMA)?(Numeros|Numero)))?))"
 	
 	#dato con parentesis o sin parentesis
 	dato =  "(("+datonorm+")|(PARENTESIS_ABRE("+datonorm+")PARENTESIS_CIERRA))"
@@ -70,7 +105,7 @@ if __name__ == '__main__':
 	
 	##Operacion matematica
 	#dato primitivo conocido para operaciones matematicas
-	datonorm_mat ="((ID)|((Numeros|Numero)(PUNTO(Numeros|Numero))?))"
+	datonorm_mat ="((ID)|(((RESTA|SUMA)?(Numeros|Numero))(PUNTO((RESTA|SUMA)?(Numeros|Numero)))?))"
 	
 	#dato con parentesis o sin parentesis
 	dato_mat =  "(("+datonorm_mat+")|(PARENTESIS_ABRE("+datonorm_mat+")PARENTESIS_CIERRA))"
@@ -106,21 +141,31 @@ if __name__ == '__main__':
 	#print(operacion_full_dosdatos)
 	#exit(0)
 	regextokens_linea = {
+		"Definir_Variables" : { #http://www.gridmorelos.uaem.mx/~mcruz/cursos/varydat.pdf
+			"regex": 
+			"PR(PR)?(ID(COMA|(IGUAL("+operacion_full_dosdatos_full_final+"|"+comparacion_full_operador_logico_parentesis_full_final+"|((RESTA|SUMA)?(Numeros|Numero))|COMILLA_SIMPLE.*COMILLA_SIMPLE|COMILLA_DOBLE.*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
+		},
 		"Variables_asinacion" : {
 			"regex": 
-			"PR(ID(COMA|(IGUAL("+operacion_full_dosdatos_full_final+"|Numeros|Numero|COMILLA_SIMPLEIDCOMILLA_SIMPLE|COMILLA_DOBLE(ID)*COMILLA_DOBLE|ID)))*)+PUNTO_COMA"
+			"IDIGUAL(("+operacion_full_dosdatos_full_final+")|("+comparacion_full_operador_logico_parentesis_full_final+")|("+dato+"))PUNTO_COMA"
 		},
 		"Definir_funcion" : {
 			"regex" : "(PRID|ID)(PARENTESIS_ABRE((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)|(PRID(COMAPRID)*((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA)))))"
 		},
+		"Lamar_funcion" : {
+			"regex" : "IDPARENTESIS_ABRE(((("+dato+"|("+operacion_full_dosdatos_full_final+")|("+comparacion_full_operador_logico_parentesis_full_final+"))(COMA("+dato+"|("+operacion_full_dosdatos_full_final+")|("+comparacion_full_operador_logico_parentesis_full_final+")))*)PARENTESIS_CIERRA)|(PARENTESIS_CIERRA))PUNTO_COMA"
+		},
 		"Libreria" : {
-			"regex" : "NUMERALID((MENOR_QUE(ID|(IDPUNTOID))MAYOR_QUE)|(COMILLA_DOBLE(ID|(IDPUNTOID)|(PR))COMILLA_DOBLE))" #https://www.programarya.com/Cursos/C++/Bibliotecas-o-Librerias
+			"regex" : "NUMERALID((MENOR_QUE(ID|(IDPUNTOID))MAYOR_QUE)|(COMILLA_DOBLE(ID|(IDPUNTOID)|(PR))COMILLA_DOBLE))", #https://www.programarya.com/Cursos/C++/Bibliotecas-o-Librerias
+			"Eval" : "#include.*"
 		},
 		"Imprimir_cout" : {
-			"regex" : "(PRDOS_PUNTOSDOS_PUNTOS)?PR(MENOR_QUEMENOR_QUE((PARENTESIS_ABRE(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)PARENTESIS_CIERRA)|(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)))+PUNTO_COMA"
+			"regex" : "(PRDOS_PUNTOSDOS_PUNTOS)?PR(MENOR_QUEMENOR_QUE((PARENTESIS_ABRE(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)PARENTESIS_CIERRA)|(ID|"+operacion_full_dosdatos_full_final+"|COMILLA_DOBLE+.+COMILLA_DOBLE)))+PUNTO_COMA",
+			"Eval" : "(cout.*;|std::cout.*;)"
 		},
 		"Obtener_cin" : {
-			"regex" : "PRMAYOR_QUEMAYOR_QUE((PARENTESIS_ABREIDPARENTESIS_CIERRA)|(ID))PUNTO_COMA"
+			"regex" : "PRMAYOR_QUEMAYOR_QUE((PARENTESIS_ABREIDPARENTESIS_CIERRA)|(ID))PUNTO_COMA",
+			"Eval" : "(cin.*;|std::cin.*;)"
 		},
 		"Using_namespace_std" : {
 			"regex" : "PRPRPRPUNTO_COMA",
@@ -128,45 +173,55 @@ if __name__ == '__main__':
 		},
 		"if" : {
 			"regex" : "PRPARENTESIS_ABRE("+comparacion_full_operador_logico_parentesis_full_final+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
+			"Eval" : "if(.*)\\{?"
 		},
 		"switch" : {
 			"regex" : "PRPARENTESIS_ABRE(ID)((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
+			"Eval" : "switch(.*)\\{?"
 		},
 		"Comentario" : {
 			"regex" : "DIVISIONDIVISION.*"
 		},
-		"Contenedor" : {
+		"Llaves_contenedor" : {
 			"regex" : "(LLAVE_ABRE|LLAVE_CIERRA)"
 		},
 		"Case":{
-			"regex" : "(PR"+datonorm+"DOS_PUNTOS)"
+			"regex" : "(PR"+datonorm+"DOS_PUNTOS)",
+			"Eval" : "case.*:"
 		},
 		"default":{
-			"regex" : "(PRDOS_PUNTOS)"
-		},
-		"Operacion_mat": {
-			"regex" : operacion_full_dosdatos_full_final
+			"regex" : "(PRDOS_PUNTOS)",
+			"Eval" : "default:"
 		}
-		
 	}
-
+	"""
+		"Operacion_mat": {
+			"regex" : operacion_full_dosdatos_full_final+"PUNTO_COMA"
+		}
+	"""		
+	#print(regextokens_linea["Lamar_funcion"]["regex"])
+	#exit(0)
 	incremento_decremento = "(IDSUMASUMA|IDRESTARESTA)"
 	regextokens_linea["incremento_decremento"]={
 			"regex" : "("+incremento_decremento+"PUNTO_COMA)"
 		}
-	for_center = "("+regextokens_linea["Variables_asinacion"]["regex"]+comparacion_full+"PUNTO_COMA("+incremento_decremento+"(COMA)?)+)"
+	for_center = "("+regextokens_linea["Definir_Variables"]["regex"]+comparacion_full+"PUNTO_COMA("+incremento_decremento+"(COMA)?)+)"
 	regextokens_linea["for"]={
-			"regex" : "PRPARENTESIS_ABRE("+for_center+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))"
+			"regex" : "PRPARENTESIS_ABRE("+for_center+")((PARENTESIS_CIERRALLAVE_ABRE)|(PARENTESIS_CIERRA))",
+			"Eval" : "for(.*)\\{?"
 		}
 	regextokens_linea["forinfinite"]={
-			"regex" : "PRPARENTESIS_ABREPUNTO_COMAPUNTO_COMAPARENTESIS_CIERRA"
+			"regex" : "PRPARENTESIS_ABREPUNTO_COMAPUNTO_COMAPARENTESIS_CIERRA",
+			"Eval" : "for(.*)\\{?"
 		}
 	regextokens_linea["Palabra_reservada"]={
-			"regex" : "PRPUNTO_COMA"
+			"regex" : "PRPUNTO_COMA",
+			"Eval" : "break;|continue;"
 		}
 	
 	regextokens_linea["return"]={
-			"regex" : "(PR("+dato+")PUNTO_COMA)"
+			"regex" : "(PR(("+operacion_full_dosdatos_full_final+")|("+comparacion_full_operador_logico_parentesis_full_final+")|("+dato+"))PUNTO_COMA)",
+			"Eval" : "return(.*);"
 		}
 
 	#print(regextokens_linea["if"]["regex"])
@@ -181,4 +236,4 @@ if __name__ == '__main__':
 				cadena_linea += token.get_tipo()
 				cadena_lexema += token.get_lexema()
 				numlinea = token.get_linea()
-			determina_bien_escrito(cadena_linea.strip(),cadena_lexema.strip(),regextokens_linea,numlinea)
+			determina_bien_escrito(cadena_linea.strip(),cadena_lexema.strip(),regextokens_linea,numlinea,operacion_full_dosdatos_full_final)
