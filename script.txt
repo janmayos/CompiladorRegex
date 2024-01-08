@@ -6,7 +6,8 @@
 using namespace std; //using namespace 
  
 int Numero1 , Numero2 ; //comentar 
-
+Numero1 = 1;
+Numero1 = funcion();
 char Suma , Resta , Multiplicacion , Division, Operacion; 
  int hola(){
   return 0;
@@ -103,4 +104,7 @@ float a = 2;
 float b = -222.22;
 int jajajaj = a+ba+b+((2/d)+(dl+2.2)); 
 char a = '2';
- 
+funcion(2,2+1);
+a = funcion(2,2+1);
+int a = 2;
+int a = funcion(2,2+1);
