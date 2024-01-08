@@ -57,6 +57,7 @@ def determina_bien_escrito(cadena,cadena_lexema,regextokens_linea,numlinea,opera
 			print("Tiene comentario")
 			exit(0)
 		print("Linea no reconocida '"+cadena+"'"+" "+str(numlinea))
+		exit(0) #Termina si no reconoce linea
 if __name__ == '__main__':
 
 	#dato primitivo conocido 
@@ -223,6 +224,14 @@ if __name__ == '__main__':
 			"regex" : "(PR(("+operacion_full_dosdatos_full_final+")|("+comparacion_full_operador_logico_parentesis_full_final+")|("+dato+"))PUNTO_COMA)",
 			"Eval" : "return(.*);"
 		}
+	regextokens_linea["Variables_asinacion_funcion"]={
+		"regex" : "IDIGUAL"+regextokens_linea["Lamar_funcion"]["regex"]
+	}
+	regextokens_linea["Definir_Variables_funcion"]={
+		"regex" : "PRIDIGUAL"+regextokens_linea["Lamar_funcion"]["regex"]
+	}
+	
+
 
 	#print(regextokens_linea["if"]["regex"])
 	#exit(0)
